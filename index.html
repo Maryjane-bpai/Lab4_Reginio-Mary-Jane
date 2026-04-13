@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mary Jane Reginio - Personal Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* Profile Picture */
+        .profile-image-container {
+            text-align: center;
+            grid-column: 1;
+        }
+
+        .profile-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 8px solid white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .profile-image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* About Section */
+        .about-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            grid-column: 2;
+        }
+
+        .about-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+
+        .about-section p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Skills Table */
+        .skills-section {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .skills-section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9ff;
+            transform: scale(1.01);
+            transition: all 0.3s ease;
+        }
+
+        .skill-level {
+            width: 200px;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 5px;
+            transition: width 2s ease;
+        }
+
+        /* Contact Form */
+        .contact-section {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .contact-section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Form Validation */
+        .error {
+            border-color: #e74c3c !important;
+            background: #fdf2f2;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">JD</div>
+            <ul class="nav-links">
+                <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+                <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
+                <li><a href="#skills" onclick="scrollToSection('skills')">Skills</a></li>
+                <li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Profile Picture & About -->
+        <div class="profile-grid" id="home">
+            <div class="profile-image-container">
+                <img src="file:///C:/Users/joshu/Downloads/536111801_1491085342029858_5216104941389371302_n.jpg" 
+                     alt="Profile Picture" class="profile-image" onclick="openModal()" id="profileImg">
+            </div>
+            
+            <div class="about-section" id="about">
+                <h2>About Me</h2>
+                <p>Hi, I'm Mary Jane Reginio, I’ve always been a fan of Thai and bl series which explains my love for long-running series and my recent dive into technology. I’m a proud introvert who finds energy in quiet spaces, which has become my secret weapon as I learn to code. I love the logic of tech and the way it allows me to build something from nothing. I’m currently starting my journey and looking forward to turning my 'solo time' into 'building time. </p>
+            </div>
+        </div>
+
+        <!-- Skills Table -->
+        <div class="skills-section" id="skills">
+            <h2>Technical Skills</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Skill</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Adaptability</td>
+                        <td>
+                            <div class="skill">
+                                <div class="skill-progress" style="width: 95%" data-width="95"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Time Management</td>
+                        <td>
+                            <div class="skill">
+                                <div class="skill-progress" style="width: 90%" data-width="90"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Active LIstening</td>
+                        <td>
+                            <div class="skill">
+                                <div class="skill-progress" style="width: 85%" data-width="85"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Empathy</td>
+                        <td>
+                            <div class="skill">
+                                <div class="skill-progress" style="width: 92%" data-width="92"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-section" id="contact">
+            <h2>Get In Touch</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required>
+                    <div class="error-message" id="nameError">Please enter your full name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" name="message" required></textarea>
+                    <div class="error-message" id="messageError">Please enter your message</div>
+                </div>
+                
+                <button type="submit" class="submit-btn">Send Message</button>
+                <div class="success-message" id="successMessage">
+                    Thank you! Your message has been sent successfully. I'll get back to you soon!
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="profile-image-modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function openModal() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'flex';
+            modalImg.src = document.getElementById('profileImg').src;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        function animateSkillBars() {
+            const skillBars = document.querySelectorAll('.skill-progress');
+            skillBars.forEach(bar => {
+                const barTop = bar.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (barTop < windowHeight - 100) {
+                    bar.style.width = bar.dataset.width + '%';
+                }
+            });
+        }
+
+        // Form validation
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let isValid = true;
+            const inputs = ['name', 'email', 'subject', 'message'];
+            
+            // Reset previous errors
+            inputs.forEach(input => {
+                const field = document.getElementById(input);
+                const error = document.getElementById(input + 'Error');
+                field.classList.remove('error');
+                error.style.display = 'none';
+            });
+            
+            inputs.forEach(input => {
+                const field = document.getElementById(input);
+                const error = document.getElementById(input + 'Error');
+                
+                if (!field.value.trim()) {
+                    field.classList.add('error');
+                    error.style.display = 'block';
+                    isValid = false;
+                } else if (input === 'email') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(field.value)) {
+                        field.classList.add('error');
+                        error.textContent = 'Please enter a valid email address';
+                        error.style.display = 'block';
+                        isValid = false;
+                    }
+                }
+            });
+            
+            if (isValid) {
+                document.getElementById('successMessage').style.display = 'block';
+                this.reset();
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+            }
+        });
+
+        window.addEventListener('scroll', animateSkillBars);
+        window.addEventListener('load', animateSkillBars);
+
+        animateSkillBars();
+    </script>
+</body>
+</html>
